@@ -1,27 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+export const IMAGE_URL = "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/"
 
-// Config driven UI
-
-// Header Component
-// Optinonal chaining---> ?.
-const Header = () => {
-    return (
-        <a href="/">
-            <div className="header">
-                <img className="burger-logo" src="https://www.logodesign.net/logo/smoking-burger-with-lettuce-3624ld.png" alt="logo" />
-                <ul className="nav-items">
-                    <li>Home</li>
-                    <li>About</li>
-                    <li>Contact</li>
-                    <li>Cart</li>
-                </ul>
-            </div>
-        </a>
-    );
-};
-
-const restaurantData = [
+export const restaurantData = [
     {
         "@type": "type.googleapis.com/swiggy.presentation.food.v2.Restaurant",
         "info": {
@@ -454,60 +433,3 @@ const restaurantData = [
         "widgetId": "collectionV5RestaurantListWidget_SimRestoRelevance_food_seo"
     }
 ]
-
-const RestaurantCard = ({ name, cloudinaryImageId, cuisines }) => {
-    return (
-        <div className="restaurant-card">
-            <img className="restaurant-image" src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/" + cloudinaryImageId}
-                alt="restaurant-image" />
-            <h2>{name}</h2>
-            <h3>{cuisines.join(' , ')}</h3>
-        </div>
-    );
-}
-
-//Body Component
-const Body = () => {
-    return (
-        <div className="body">
-            {
-                restaurantData.map((restaurant) => {
-                    return <RestaurantCard {...restaurant.info} key={restaurant.info.id} />
-                }
-                )
-            }
-            {/* <RestaurantCard {...restaurantData[0].info} />
-            {/* <RestaurantCard />
-            <RestaurantCard />
-            <RestaurantCard />
-            <RestaurantCard />
-            <RestaurantCard />
-            <RestaurantCard /> */}
-        </div>
-
-    );
-};
-
-//Footer Component
-const Footer = () => {
-    return (
-        <h1>Footer</h1>
-    );
-};
-
-// AppLayout Component
-// JSX can have only 1 parent element  <React.Fragment> </React.Fragment> is equivalent to <></>
-const AppLayout = () => {
-    return (
-        <React.Fragment>
-            <Header />
-            <Body />
-            <Footer />
-        </React.Fragment>
-    );
-};
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<AppLayout />);
-
-// React components --> 1. Functional 2. Class based
