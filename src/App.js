@@ -5,13 +5,8 @@ import Header from "./components/Header";
 // Named import
 import * as Aryan from "./components/Footer";
 import Body from "./components/Body"
-import { IMAGE_URL } from "./components/config";
-
-
-
 
 // Config driven UI
-
 // AppLayout Component
 // JSX can have only 1 parent element  <React.Fragment> </React.Fragment> is equivalent to <></>
 const AppLayout = () => {
