@@ -18,3 +18,26 @@
     padding: 40px;
     list-style: none;
 }
+
+.body {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin: 10px;
+}
+
+.restaurant-card {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    height: 300px;
+    width: 200px;
+    margin: 10px;
+}
+
+.restaurant-image {
+    width: 100px;
+    height: 100px;
+}
