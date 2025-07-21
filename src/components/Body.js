@@ -1,5 +1,7 @@
 import { IMAGE_URL, restaurantData } from "./config";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ShimmerUI } from "./ShimmerUI";
+
 
 const RestaurantCard = ({ name, cloudinaryImageId, cuisines }) => {
     return (
@@ -27,17 +29,40 @@ const RestaurantCard = ({ name, cloudinaryImageId, cuisines }) => {
 
 
 // to make the variable in sync with UI , we use useState()
-
+// swiggy api --> https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.656158&lng=77.2315589&page_type=DESKTOP_WEB_LISTING
 
 //Body Component
 const Body = () => {
 
     const [searchText, setSearchText] = useState("");  // returns an array = [var name, set function]
-    const [restaurantList, setRestaurantList] = useState(restaurantData);
+    const [restaurantList, setRestaurantList] = useState([]);
+    const [filteredRestaurantList, setFilteredRestaurantList] = useState([]);
+    console.log("aryan2 ")
 
     const filterRestaurant = (searchText) => {
-        const filteredRestaurant = restaurantData.filter((restaurant) => restaurant.info.name.includes(searchText));
-        setRestaurantList(filteredRestaurant);
+        const filteredRestaurant = restaurantList.filter((restaurant) => restaurant.info.name.includes(searchText));
+        setFilteredRestaurantList(filteredRestaurant);
+    }
+
+    // useEffect is called after component renders
+    // empty array means that the useEffect is called only once after the component renders
+    // if the array is [searchText] , then the useEffect is called after intial render and after every rerender of the component when the searchText changes 
+    useEffect(() => {
+        console.log("Aryan")
+        getRestaurantList();
+    }, [])
+
+    async function getRestaurantList() {
+        const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.656158&lng=77.2315589&page_type=DESKTOP_WEB_LISTING");
+        const json = await data.json();
+        // show restaurant data in the console
+        console.log(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+        setRestaurantList(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+        setFilteredRestaurantList(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+    }
+    // conditional rendering
+    if (restaurantList.length === 0) {
+        return <ShimmerUI />
     }
 
     return (
@@ -54,9 +79,15 @@ const Body = () => {
                 <button onClick={() => filterRestaurant(searchText)}> Search</button>
                 {searchText}
             </div>
+
+            {
+                // javascript expressions can be used in the return statement inside the {}, not statements
+                filteredRestaurantList.length === 0 && <div>No restaurants found</div>
+            }
+
             <div className="body">
                 {
-                    restaurantList.map((restaurant) => {
+                    filteredRestaurantList.map((restaurant) => {
                         return <RestaurantCard {...restaurant.info} key={restaurant.info.id} />
                     }
                     )
