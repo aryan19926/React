@@ -1,7 +1,7 @@
 import { IMAGE_URL, restaurantData } from "./config";
 import { useState, useEffect } from "react";
 import { ShimmerUI } from "./ShimmerUI";
-
+import { Link } from "react-router-dom";
 
 const RestaurantCard = ({ name, cloudinaryImageId, cuisines }) => {
     return (
@@ -29,11 +29,14 @@ const RestaurantCard = ({ name, cloudinaryImageId, cuisines }) => {
 
 
 // to make the variable in sync with UI , we use useState()
+// https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.7040592&lng=77.10249019999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING
 // swiggy api --> https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.656158&lng=77.2315589&page_type=DESKTOP_WEB_LISTING
 
 //Body Component
 const Body = () => {
 
+
+    // useState is a hook that is used to create a state variable inside a functional component 
     const [searchText, setSearchText] = useState("");  // returns an array = [var name, set function]
     const [restaurantList, setRestaurantList] = useState([]);
     const [filteredRestaurantList, setFilteredRestaurantList] = useState([]);
@@ -53,7 +56,7 @@ const Body = () => {
     }, [])
 
     async function getRestaurantList() {
-        const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.656158&lng=77.2315589&page_type=DESKTOP_WEB_LISTING");
+        const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.7040592&lng=77.10249019999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
         const json = await data.json();
         // show restaurant data in the console
         console.log(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
@@ -86,9 +89,14 @@ const Body = () => {
             }
 
             <div className="body">
+
                 {
                     filteredRestaurantList.map((restaurant) => {
-                        return <RestaurantCard {...restaurant.info} key={restaurant.info.id} />
+                        return (
+                            <Link to={"/restaurant/" + restaurant.info.id} key={restaurant.info.id}>
+                                <RestaurantCard {...restaurant.info} />
+                            </Link>
+                        )
                     }
                     )
                 }
